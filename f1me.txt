@@ -1,0 +1,41 @@
+az vm create \
+    --name MyLinuxAgent \
+    --resource-group vmjan182022_group \
+    --image canonical:0001-com-ubuntu-server-focal:20_04-lts:latest \
+    --size Standard_DS2_v2 \
+    --admin-username azureuser \
+    --generate-ssh-keys
+
+
+
+az vm create \
+    --name MyLinuxAgent \
+    --resource-group tailspin-space-game-rg \
+    --image canonical:0001-com-ubuntu-server-focal:20_04-lts:latest \
+    --size Standard_DS2_v2 \
+    --admin-username azureuser \
+    --generate-ssh-keys
+
+IPADDRESS=$(az vm show \
+  --name MyLinuxAgent \
+  --resource-group MYLINUXAGENT_GROUP \
+  --show-details \
+  --query [publicIps] \
+  --output tsv)
+
+export AZP_URL=https://dev.azure.com/arunbalyan2008
+
+export AZP_TOKEN=fowp2ikpz64nro3fvgjxqzu3w3redid2gpjuatlcxblz3mj7j2ha
+
+az configure --defaults location=centralindia
+
+az appservice plan create \
+  --name tailspin-space-game-prod-asp \
+  --resource-group tailspin-space-game-rg \
+  --sku S1 \
+  --is-linux
+
+tailspin-space-game-web-dev-29026.azurewebsites.net      Running
+tailspin-space-game-web-test-29026.azurewebsites.net     Running
+tailspin-space-game-web-staging-29026.azurewebsites.net  Running
+tailspin-space-game-web-staging-29026-swap.azurewebsites.net
